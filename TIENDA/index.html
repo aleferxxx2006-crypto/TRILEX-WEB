@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>TRILEX</title>
+
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+<style>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: white;
+}
+
+/* INICIO */
+#inicio {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#inicio img {
+  width: 140px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+#inicio button {
+  padding: 15px 25px;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+#tienda {
+  display: none;
+
+  /* ESPACIO PARA QUE EL HEADER NO TAPe PRODUCTOS */
+  padding-top: 90px;
+}
+
+header {
+  text-align: center;
+  font-size: 26px;
+  padding: 20px;
+  font-weight: bold;
+}
+
+/* PANEL CONFIGURACIÓN */
+#configPanel {
+  display: none;
+  position: fixed;
+  top: 60px;
+  right: 15px;
+  width: 240px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  z-index: 999;
+}
+.productos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  padding: 20px;
+
+  /* CAMBIO IMPORTANTE (ESTO ES LO QUE ARREGLA EL SCROLL) */
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+}
+
+/* BARRA LATERAL DE SCROLL */
+.productos::-webkit-scrollbar {
+  width: 10px;
+}
+
+.productos::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.productos::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.productos::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.producto {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  background: #fff;
+
+}
+.producto {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.producto:hover {
+  transform: translateY(-8px) scale(1.03);
+
+  /* sombra base */
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2),
+
+  /* brillo rosa */
+  0 0 15px rgba(255, 0, 150, 0.6),
+  0 0 30px rgba(255, 0, 150, 0.4);
+}
+.producto img {
+  width: 100%;
+  border-radius: 10px;
+}
+.producto img {
+  transition: transform 0.3s ease;
+}
+
+.producto:hover img {
+  transform: scale(1.08);
+}
+
+.nombre {
+  color: blue;
+  font-weight: bold;
+}
+
+.precio {
+  color: red;
+  font-size: 18px;
+  margin: 5px 0;
+}
+
+button.comprar {
+  background: green;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+}
+/* 🟢 BOTÓN EFECTO GLOW */
+.btn-entrar {
+  padding: 15px 30px;
+  background: linear-gradient(45deg, black, hotpink);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
+  box-shadow: 0 0 15px rgba(255, 0, 150, 0.4);
+}
+
+.btn-entrar:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 25px rgba(255, 0, 150, 0.7);
+}
+
+#inicio {
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+#inicio.oculto {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.lineas-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px; /* más alta */
+  display: flex;
+  flex-direction: column;
+  z-index: 3000;
+}
+
+.linea-negra {
+  height: 50%;
+  background: black;
+  display: flex;
+  align-items: center;
+}
+
+.linea-rosa {
+  height: 50%;
+  background: hotpink;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 15px;
+}
+
+.logo-barra {
+  height: 100%;
+  max-height: 70px;
+  width: auto;
+  display: block;
+}
+.linea-negra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  gap: 10px;
+}
+
+.bloque {
+  flex: 1;
+  text-align: center;
+  color: #d9d9d9;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.separador {
+  width: 1px;
+  height: 60%;
+  background: rgba(255,255,255,0.3);
+}
+.envio-verde {
+  color: #00c853;
+  font-weight: 600;
+  font-family: 'Segoe UI', 'Poppins', Arial, sans-serif;
+  letter-spacing: 0.5px;
+  animation: pulso 1.5s infinite;
+}
+@keyframes pulso {
+  0% {
+    transform: scale(1);
+    text-shadow: 0 0 0 rgba(0, 200, 83, 0.7);
+  }
+  50% {
+    transform: scale(1.1);
+    text-shadow: 0 0 10px rgba(0, 200, 83, 0.9);
+  }
+  100% {
+    transform: scale(1);
+    text-shadow: 0 0 0 rgba(0, 200, 83, 0.7);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="inicio">
+  <img src="./logotrilex2026.png?v=1" width="140">
+  <h1>TRILEX</h1>
+ <button class="btn-entrar" onclick="entrar()">Entrar a la tienda</button>
+</div>
+
+<div id="tienda" style="display:none;position:relative;">
+
+<div class="lineas-top">
+ 
+<div class="linea-negra">
+
+  <div class="bloque envio-verde">
+  Envío gratis 🛒
+  </div>
+
+  <div class="separador"></div>
+
+  <div class="bloque">
+    Ofertas
+  </div>
+
+  <div class="separador"></div>
+
+  <div class="bloque">
+    Soporte
+  </div>
+
+</div>
+
+  <div class="linea-rosa">
+    <img src="./logotrilex2026.png?v=1" class="logo-barra">
+
+    <div onclick="toggleConfig()" style="
+      margin-left: auto;
+      margin-right: 15px;
+      font-size: 22px;
+      cursor: pointer;
+    ">
+      ⚙️
+    </div>
+
+  </div>
+</div>
+
+<div id="configPanel">
+  <h3 style="text-align:center;">Configuración</h3>
+
+  <p><b>Métodos de pago:</b></p>
+  <p>• Yape</p>
+  <p>• BCP</p>
+
+  <hr>
+
+  <p><b>Términos:</b></p>
+  <p>Aquí puedes escribir tus términos y condiciones.</p>
+
+  <p><b>Políticas:</b></p>
+  <p>Aquí puedes escribir tus políticas de tienda.</p>
+</div>
+
+<header style="
+  position: fixed;
+  top: 12px;
+  left: 0;
+  width: 100%;
+  background: white;
+  z-index: 1000;
+  padding: 10px;
+">
+</header>
+
+<div class="productos" id="lista"></div>
+</div>
+
+<script>
+
+const productos = [
+  {
+    nombre: "Audífonos Bluetooth piero",
+    precio: "39.90",
+    imagen: "./audifonosXL.png?v=1"
+  },
+  {
+    nombre: "Smartwatch xlx",
+    precio: "59.90",
+    imagen: "https://via.placeholder.com/200"
+  },
+  {
+    nombre: "Luz LED RGB",
+    precio: "25.00",
+    imagen: "https://via.placeholder.com/200"
+  },
+  {
+    nombre: "oil",
+    precio: "25.00",
+    imagen: "https://via.placeholder.com/200"
+  },
+  {
+    nombre: "casa kk",
+    precio: "25.00",
+    imagen: "https://via.placeholder.com/200"
+  },
+  {
+    nombre: "Luz",
+    precio: "25.00",
+    imagen: "https://via.placeholder.com/200"
+ }
+];
+
+function entrar(){
+  let inicio = document.getElementById("inicio");
+
+  inicio.classList.add("oculto");
+
+  setTimeout(() => {
+    inicio.style.display = "none";
+    document.getElementById("tienda").style.display = "block";
+    mostrarProductos();
+  }, 500);
+}
+
+function mostrarProductos(){
+  let lista = document.getElementById("lista");
+  lista.innerHTML = "";
+
+  productos.forEach(p => {
+    lista.innerHTML += `
+      <div class="producto">
+        <img src="${p.imagen}">
+        <p class="nombre">${p.nombre}</p>
+        <p class="precio">S/ ${p.precio}</p>
+        <button class="comprar"
+          onclick="comprar('${p.nombre}','${p.precio}')">
+          Comprar
+        </button>
+      </div>
+    `;
+  });
+}
+
+function comprar(nombre, precio){
+  let msg = `Hola, quiero comprar:\nProducto: ${nombre}\nPrecio: S/ ${precio}`;
+  let url = "https://wa.me/51987496840?text=" + encodeURIComponent(msg);
+  window.open(url, "_blank");
+}
+
+/* ABRIR / CERRAR CONFIGURACIÓN */
+function toggleConfig(){
+  let panel = document.getElementById("configPanel");
+
+  if(panel.style.display === "none" || panel.style.display === ""){
+    panel.style.display = "block";
+  } else {
+    panel.style.display = "none";
+  }
+}
+</script>
+
+</body>
+</html>
